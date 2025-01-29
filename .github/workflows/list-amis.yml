@@ -1,0 +1,26 @@
+name: List AMIs in AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  list_amis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ ASIARAOV7LSQC7D3OJKB }}
+          aws configure set aws_secret_access_key ${{ oVPFh0PYy+BQJzpqa9C3rjnmS9E3Fyt3tZY05c+9 }}
+          aws configure set region eu-west-2  # Replace with your region if necessary
+
+      - name: List AMIs
+        run: |
+          # List all AMIs in the account
+          aws ec2 describe-images --query "Images[*].{ID:ImageId,Name:Name,State:State,CreationDate:CreationDate}" --output table
